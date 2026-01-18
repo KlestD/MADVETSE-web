@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madverse - Music Art and Dance Festival</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'madverse-dark': '#2a2a2a',
+                        'madverse-darker': '#1e1e1e',
+                        'madverse-light': '#f8f8f8',
+                        'madverse-accent': '#e5e5e5'
+                    },
+                    fontFamily: {
+                        'festival': ['Orbitron', 'sans-serif'],
+                        'display': ['Syncopate', 'sans-serif'],
+                        'body': ['Rajdhani', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><radialGradient id="fireworks" cx="0.7" cy="0.3" r="0.5"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.8"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="800" fill="%23222"/><circle cx="800" cy="200" r="50" fill="url(%23fireworks)"/><circle cx="850" cy="150" r="30" fill="url(%23fireworks)"/><circle cx="750" cy="250" r="40" fill="url(%23fireworks)"/><line x1="600" y1="100" x2="700" y2="200" stroke="%23ff0000" stroke-width="2" opacity="0.6"/><line x1="900" y1="150" x2="1000" y2="250" stroke="%230000ff" stroke-width="2" opacity="0.6"/><line x1="500" y1="300" x2="600" y2="400" stroke="%23ff0000" stroke-width="2" opacity="0.6"/><line x1="1000" y1="350" x2="1100" y2="450" stroke="%230000ff" stroke-width="2" opacity="0.6"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        .sphere-bg {
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+        }
+        .brasil-bg {
+            background: linear-gradient(45deg, #059669, #10b981, #f59e0b);
+        }
+        .atmosphere-bg {
+            background: linear-gradient(45deg, #dc2626, #b91c1c);
+        }
+        
+        /* Dropdown Menu Styles */
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            min-width: 200px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.05),
+                0 0 40px rgba(138, 43, 226, 0.1);
+        }
+        
+        .dropdown-container:hover .dropdown-menu,
+        .dropdown-container:focus-within .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: white;
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e5e5e5;
+            transform: translateX(5px);
+        }
+        
+        .dropdown-header {
+            padding: 12px 16px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #e5e5e5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            margin: 8px 0;
+        }
+        
+        /* Hover Card Effects */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.1),
+                0 0 40px rgba(138, 43, 226, 0.2),
+                0 0 60px rgba(75, 0, 130, 0.1);
+        }
+        
+        /* Holographic Shimmer Effect */
+        .card-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.1) 25%, 
+                var(--shimmer-color, rgba(138, 43, 226, 0.2)) 50%, 
+                rgba(255, 255, 255, 0.1) 75%, 
+                transparent 100%
+            );
+            transform: translateX(-100%) skewX(-15deg);
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .card-hover:hover::before {
+            transform: translateX(100%) skewX(-15deg);
+        }
+        
+        /* Holographic Rainbow Border */
+        .card-hover::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(
+                45deg,
+                var(--holographic-color-1, #ff0000), 
+                var(--holographic-color-2, #ff7f00), 
+                var(--holographic-color-3, #ffff00), 
+                var(--holographic-color-4, #00ff00), 
+                var(--holographic-color-5, #0000ff), 
+                var(--holographic-color-6, #4b0082), 
+                var(--holographic-color-7, #9400d3),
+                var(--holographic-color-1, #ff0000), 
+                var(--holographic-color-2, #ff7f00), 
+                var(--holographic-color-3, #ffff00), 
+                var(--holographic-color-4, #00ff00), 
+                var(--holographic-color-5, #0000ff), 
+                var(--holographic-color-6, #4b0082), 
+                var(--holographic-color-7, #9400d3)
+            );
+            background-size: 400% 400%;
+            border-radius: 8px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: holographic-shift 3s ease-in-out infinite;
+        }
+        
+        .card-hover:hover::after {
+            opacity: 1;
+        }
+        
+        @keyframes holographic-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .card-content {
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .card-hover:hover .card-content {
+            transform: translateZ(20px);
+        }
+        
+        /* Holographic Text Glow */
+        .card-hover:hover .holographic-text {
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(138, 43, 226, 0.6),
+                0 0 30px rgba(75, 0, 130, 0.4);
+        }
+        
+        /* 3D Ticket Model */
+        .ticket-3d {
+            perspective: 1000px;
+            width: 300px;
+            height: 200px;
+            position: relative;
+        }
+        
+        .ticket-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: ticket-spin 8s linear infinite;
+        }
+        
+        @keyframes ticket-spin {
+            0% { transform: rotateY(0deg) rotateX(15deg); }
+            100% { transform: rotateY(360deg) rotateX(15deg); }
+        }
+        
+        .ticket-face {
+            position: absolute;
+            width: 280px;
+            height: 180px;
+            background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 50%, #1e1e1e 100%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.1),
+                0 0 40px rgba(138, 43, 226, 0.2),
+                0 0 60px rgba(75, 0, 130, 0.1);
+            overflow: hidden;
+        }
+        
+        .ticket-face::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.1) 25%, 
+                rgba(138, 43, 226, 0.2) 50%, 
+                rgba(255, 255, 255, 0.1) 75%, 
+                transparent 100%
+            );
+            transform: translateX(-100%) skewX(-15deg);
+            animation: ticket-shimmer 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .ticket-face::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(
+                45deg,
+                #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3,
+                #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3
+            );
+            background-size: 400% 400%;
+            border-radius: 14px;
+            z-index: -1;
+            opacity: 0.8;
+            animation: holographic-shift 3s ease-in-out infinite;
+        }
+        
+        @keyframes ticket-shimmer {
+            0%, 100% { transform: translateX(-100%) skewX(-15deg); }
+            50% { transform: translateX(100%) skewX(-15deg); }
+        }
+        
+        @keyframes ticket-shimmer {
+            0%, 100% { transform: translateX(-100%) skewX(-15deg); }
+            50% { transform: translateX(100%) skewX(-15deg); }
+        }
+        
+        .ticket-face::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(
+                45deg,
+                #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3,
+                #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3
+            );
+            background-size: 400% 400%;
+            border-radius: 14px;
+            z-index: -1;
+            opacity: 0.8;
+            animation: holographic-shift 3s ease-in-out infinite;
+        }
+        
+        .ticket-front { transform: translateZ(10px); }
+        .ticket-back { transform: translateZ(-10px) rotateY(180deg); }
+        
+        .ticket-logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .ticket-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .ticket-subtitle {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .ticket-details {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .ticket-qr {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: repeating-linear-gradient(
+                45deg,
+                #000,
+                #000 2px,
+                #fff 2px,
+                #fff 4px
+            );
+            border-radius: 4px;
+        }
+        
+
+    </style>
+</head>
+<body class="bg-madverse-dark text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-madverse-darker border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center mr-3">
+                        <span class="text-madverse-dark font-bold text-lg"></span>
+                    </div>
+                    <span class="text-white font-bold text-xl font-festival tracking-wider">MADVERSE</span>
+                </div>
+                
+                <!-- Center Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <!-- Festivals & Events Dropdown -->
+                    <div class="dropdown-container">
+                        <div class="flex items-center space-x-1 cursor-pointer">
+                            <span class="text-sm uppercase font-body font-semibold">FESTIVALS & EVENTS</span>
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">Upcoming Events</div>
+                            <a href="#" class="dropdown-item">UNITY at Sphere</a>
+                            <a href="#" class="dropdown-item">Madverse Brasil</a>
+                            <a href="#" class="dropdown-item">Atmosphere</a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-header">Event Types</div>
+                            <a href="#" class="dropdown-item">Festivals</a>
+                            <a href="#" class="dropdown-item">Concerts</a>
+                            <a href="#" class="dropdown-item">Club Events</a>
+                            <a href="#" class="dropdown-item">Workshops</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">Calendar</a>
+                            <a href="#" class="dropdown-item">Past Events</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Experiences Dropdown -->
+                    <div class="dropdown-container">
+                        <div class="flex items-center space-x-1 cursor-pointer">
+                            <span class="text-sm uppercase font-body font-semibold">EXPERIENCES</span>
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">VIP Experiences</div>
+                            <a href="#" class="dropdown-item">Backstage Access</a>
+                            <a href="#" class="dropdown-item">Meet & Greet</a>
+                            <a href="#" class="dropdown-item">Artist Workshops</a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-header">Interactive</div>
+                            <a href="#" class="dropdown-item">Art Installations</a>
+                            <a href="#" class="dropdown-item">Virtual Reality</a>
+                            <a href="#" class="dropdown-item">Live Streaming</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">Custom Packages</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Store Dropdown -->
+                    <div class="dropdown-container">
+                        <div class="flex items-center space-x-1 cursor-pointer">
+                            <span class="text-sm uppercase font-body font-semibold">STORE</span>
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">Merchandise</div>
+                            <a href="#" class="dropdown-item">Apparel</a>
+                            <a href="#" class="dropdown-item">Accessories</a>
+                            <a href="#" class="dropdown-item">Collectibles</a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-header">Music</div>
+                            <a href="#" class="dropdown-item">Vinyl Records</a>
+                            <a href="#" class="dropdown-item">Digital Downloads</a>
+                            <a href="#" class="dropdown-item">Limited Editions</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">Gift Cards</a>
+                            <a href="#" class="dropdown-item">Sale Items</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Music Dropdown -->
+                    <div class="dropdown-container">
+                        <div class="flex items-center space-x-1 cursor-pointer">
+                            <span class="text-sm uppercase font-body font-semibold">MUSIC</span>
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">Artists</div>
+                            <a href="#" class="dropdown-item">Featured Artists</a>
+                            <a href="#" class="dropdown-item">Lineup</a>
+                            <a href="#" class="dropdown-item">Artist Profiles</a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-header">Content</div>
+                            <a href="#" class="dropdown-item">Live Sets</a>
+                            <a href="#" class="dropdown-item">Podcasts</a>
+                            <a href="#" class="dropdown-item">Interviews</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">Madverse Radio</a>
+                            <a href="#" class="dropdown-item">Playlists</a>
+                        </div>
+                    </div>
+                    
+                    <!-- More Dropdown -->
+                    <div class="dropdown-container">
+                        <div class="flex items-center space-x-1 cursor-pointer">
+                            <span class="text-sm uppercase font-body font-semibold">MORE</span>
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">About</div>
+                            <a href="#" class="dropdown-item">Our Story</a>
+                            <a href="#" class="dropdown-item">Mission</a>
+                            <a href="#" class="dropdown-item">Team</a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-header">Support</div>
+                            <a href="#" class="dropdown-item">Help Center</a>
+                            <a href="#" class="dropdown-item">Contact Us</a>
+                            <a href="#" class="dropdown-item">FAQ</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">Careers</a>
+                            <a href="#" class="dropdown-item">Press</a>
+                            <a href="#" class="dropdown-item">Partners</a>
+                        </div>
+                    </div>
+                </nav>
+                
+                <!-- Account -->
+                <div class="flex items-center space-x-2 cursor-pointer">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-sm uppercase font-body font-semibold">MY ACCOUNT</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center justify-center relative">
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-12 max-w-7xl mx-auto px-4">
+            <!-- 3D Ticket Model -->
+            <div class="ticket-3d">
+                <div class="ticket-container">
+                    <!-- Front Face - 1 Day Pass -->
+                    <div class="ticket-face ticket-front">
+                        <!-- <div class="ticket-logo" style="background: linear-gradient(135deg, #8B5CF6, #3B82F6);">
+                            <span class="text-white font-bold text-2xl">1</span>
+                        </div> -->
+                        <!-- <div class="ticket-title">MADVERSE</div> -->
+                        <div class="ticket-title">1 DAY PASS<br></div>
+                        <div class="ticket-qr"></div>
+                        <div class="ticket-details">
+                            <span>DAY PASS</span>
+                            <span>$99</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Back Face - 3 Day Pass -->
+                    <div class="ticket-face ticket-back">
+                        <div class="ticket-title">3 DAY PASS</div>
+                        <!-- <div class="ticket-subtitle" style="font-size: 10px; padding: 0 20px;">
+                            Complete Madverse experience with VIP access, exclusive workshops, and after-party entry.
+                        </div> -->
+                        <div class="ticket-qr"></div>
+
+                        <div class="ticket-details">
+                            <span>3 DAY</span>
+                            <span>$249</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Content -->
+            <div class="text-center lg:text-left z-10 max-w-2xl">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 font-display tracking-tight">
+                    Relive the magic of Madverse with the Aftermovie
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 font-body font-medium">
+                    A celebration of music, art, and dance - where creativity meets unity.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <button class="px-8 py-3 border border-white text-white hover:bg-white hover:text-madverse-dark transition-colors duration-300 rounded flex items-center justify-center space-x-2 font-body font-semibold tracking-wide">
+                        <span>WATCH NOW</span>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <button class="px-8 py-3 border border-white text-white hover:bg-white hover:text-madverse-dark transition-colors duration-300 rounded flex items-center justify-center space-x-2 font-body font-semibold tracking-wide">
+                        <span>FULL SETS</span>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Festivals & Events Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold font-display tracking-tight">Upcoming Festivals & Events</h2>
+                <button class="px-6 py-3 border border-white text-white hover:bg-white hover:text-madverse-dark transition-colors duration-300 rounded flex items-center space-x-2 font-body font-semibold tracking-wide">
+                    <span>CALENDAR</span>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Event Card 1: UNITY at Sphere -->
+                <div class="bg-madverse-darker rounded-lg overflow-hidden card-hover relative">
+                    <div class="relative">
+                        <div class="absolute top-4 left-4 bg-madverse-dark px-3 py-2 rounded">
+                            <div class="text-xs font-bold">AUG 29</div>
+                            <div class="text-xs font-bold">OCT 18</div>
+                        </div>
+                        <div class="sphere-bg h-48 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4">
+                                    <span class="text-madverse-dark font-bold text-2xl">S</span>
+                                </div>
+                                <div class="text-white text-lg font-bold font-festival tracking-wider">SPHERE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 card-content">
+                        <h3 class="text-2xl font-bold mb-2 font-display tracking-tight holographic-text">UNITY at Sphere</h3>
+                        <p class="text-gray-300 mb-4">Sphere, Las Vegas, USA</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-sm font-bold hover:underline">INFO ></a>
+                            <a href="#" class="text-sm font-bold hover:underline">TICKETS ></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 2: Madverse Brasil -->
+                <div class="bg-madverse-darker rounded-lg overflow-hidden card-hover relative">
+                    <div class="relative">
+                        <div class="absolute top-4 left-4 bg-madverse-dark px-3 py-2 rounded">
+                            <div class="text-xs font-bold">OCT 10</div>
+                            <div class="text-xs font-bold">OCT 12</div>
+                        </div>
+                        <div class="brasil-bg h-48 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4">
+                                    <span class="text-madverse-dark font-bold text-2xl">M</span>
+                                </div>
+                                <div class="text-white text-lg font-bold font-festival tracking-wider">MADVERSE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 card-content">
+                        <h3 class="text-2xl font-bold mb-2 font-display tracking-tight holographic-text">Madverse Brasil</h3>
+                        <p class="text-gray-300 mb-4">Itu (São Paulo), Brazil</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-sm font-bold hover:underline">INFO ></a>
+                            <a href="#" class="text-sm font-bold hover:underline">TICKETS ></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Card 3: Atmosphere -->
+                <div class="bg-madverse-darker rounded-lg overflow-hidden card-hover relative">
+                    <div class="relative">
+                        <div class="absolute top-4 left-4 bg-madverse-dark px-3 py-2 rounded">
+                            <div class="text-xs font-bold">NOV 14</div>
+                        </div>
+                        <div class="atmosphere-bg h-48 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-white text-4xl font-bold font-festival tracking-wider" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">ATMOSPHERE</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 card-content">
+                        <h3 class="text-2xl font-bold mb-2 font-display tracking-tight holographic-text">Atmosphere</h3>
+                        <p class="text-gray-300 mb-4">Antwerp Expo</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-sm font-bold hover:underline">INFO ></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticket Tiers Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-gradient-to-br from-madverse-dark via-madverse-darker to-madverse-dark opacity-50"></div>
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full opacity-20 blur-xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-red-500 to-orange-500 rounded-full opacity-20 blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-r from-green-500 to-yellow-500 rounded-full opacity-20 blur-xl animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-7xl font-bold font-display tracking-tight mb-6">
+                    Choose Your <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Experience</span>
+                </h2>
+                <p class="text-xl font-body text-gray-300 mb-8 max-w-3xl mx-auto">
+                    Select the perfect ticket tier for your Madverse journey. From a single day of magic to the complete three-day immersive experience.
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto rounded-full"></div>
+            </div>
+            
+            <!-- Ticket Tiers Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- 1 Day Pass -->
+                <div class="card-hover bg-madverse-darker rounded-lg overflow-hidden border border-gray-700 relative">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
+                    <div class="p-8">
+                        <div class="card-content">
+                            <!-- Header -->
+                            <div class="text-center mb-8">
+                                <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-white font-bold text-2xl font-festival">1</span>
+                                </div>
+                                <h3 class="text-3xl font-bold font-display tracking-tight mb-2 holographic-text">
+                                    1 Day Pass
+                                </h3>
+                                <p class="text-gray-300 font-body">Perfect for a taste of the Madverse magic</p>
+                            </div>
+                            
+                            <!-- Price -->
+                            <div class="text-center mb-8">
+                                <div class="text-6xl font-bold font-festival text-purple-400 mb-2">$99</div>
+                                <div class="text-gray-400 font-body">per day</div>
+                            </div>
+                            
+                            <!-- Features -->
+                            <div class="space-y-4 mb-8">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">Full access to all stages</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">Art installations access</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">Food & beverage vendors</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">General camping access</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">Merchandise discount</span>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA Button -->
+                            <button class="w-full py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-body font-semibold tracking-wide rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
+                                GET 1 DAY PASS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3 Day Pass -->
+                <div class="card-hover bg-madverse-darker rounded-lg overflow-hidden border border-gray-700 relative">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 to-orange-500"></div>
+                    <div class="absolute top-4 right-4 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        MOST POPULAR
+                    </div>
+                    <div class="p-8">
+                        <div class="card-content">
+                            <!-- Header -->
+                            <div class="text-center mb-8">
+                                <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-white font-bold text-2xl font-festival">3</span>
+                                </div>
+                                <h3 class="text-3xl font-bold font-display tracking-tight mb-2 holographic-text">
+                                    3 Day Pass
+                                </h3>
+                                <p class="text-gray-300 font-body">The complete Madverse experience</p>
+                            </div>
+                            
+                            <!-- Price -->
+                            <div class="text-center mb-8">
+                                <div class="text-6xl font-bold font-festival text-red-400 mb-2">$249</div>
+                                <div class="text-gray-400 font-body">save $48</div>
+                            </div>
+                            
+                            <!-- Features -->
+                            <div class="space-y-4 mb-8">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">All 1-day pass features</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">VIP camping access</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">Exclusive workshops</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">Priority merch access</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">After-party access</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                    <span class="text-gray-300 font-body">Commemorative gift</span>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA Button -->
+                            <button class="w-full py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-body font-semibold tracking-wide rounded-lg hover:from-red-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105">
+                                GET 3 DAY PASS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Info -->
+            <div class="mt-16 text-center">
+                <div class="bg-madverse-darker rounded-lg p-8 border border-gray-700 max-w-4xl mx-auto">
+                    <div class="card-content">
+                        <h3 class="text-2xl font-bold font-display tracking-tight mb-6 holographic-text">
+                            Ticket Information
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                            <div>
+                                <h4 class="text-lg font-bold font-body mb-3 text-purple-400">Payment Plans</h4>
+                                <p class="text-gray-300 font-body text-sm">Flexible payment options available for 3-day passes. Split your payment over 3 months.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold font-body mb-3 text-blue-400">Refund Policy</h4>
+                                <p class="text-gray-300 font-body text-sm">Full refunds available up to 30 days before the event. Partial refunds up to 7 days.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold font-body mb-3 text-green-400">Group Discounts</h4>
+                                <p class="text-gray-300 font-body text-sm">Save 15% on groups of 4+ tickets. Contact us for custom group packages.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-gradient-to-br from-madverse-dark via-madverse-darker to-madverse-dark opacity-50"></div>
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full opacity-20 blur-xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-red-500 to-orange-500 rounded-full opacity-20 blur-xl animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-r from-green-500 to-yellow-500 rounded-full opacity-20 blur-xl animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-7xl font-bold font-display tracking-tight mb-6">
+                    About <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Madverse</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto rounded-full"></div>
+            </div>
+            
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <!-- Left Column - Story -->
+                <div class="space-y-8">
+                    <div class="card-hover bg-madverse-darker rounded-lg p-8 border border-gray-700">
+                        <div class="card-content">
+                            <h3 class="text-3xl font-bold font-display tracking-tight mb-4 holographic-text">
+                                Our Story
+                            </h3>
+                            <p class="text-lg font-body leading-relaxed text-gray-300 mb-6">
+                                Born from the vision of uniting music, art, and dance in a transcendent experience, Madverse emerged as more than just a festival—it's a movement. We believe in the power of creative expression to transform lives and bring people together across cultures and boundaries.
+                            </p>
+                            <p class="text-lg font-body leading-relaxed text-gray-300">
+                                Since our inception, we've been pushing the boundaries of what's possible in live entertainment, creating immersive experiences that blur the line between reality and fantasy.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center p-6 bg-madverse-darker rounded-lg border border-gray-700">
+                            <div class="text-4xl font-bold font-festival text-purple-400 mb-2">50+</div>
+                            <div class="text-sm font-body font-semibold uppercase tracking-wide">Events Worldwide</div>
+                        </div>
+                        <div class="text-center p-6 bg-madverse-darker rounded-lg border border-gray-700">
+                            <div class="text-4xl font-bold font-festival text-blue-400 mb-2">1M+</div>
+                            <div class="text-sm font-body font-semibold uppercase tracking-wide">Happy Attendees</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Mission & Values -->
+                <div class="space-y-6">
+                    <div class="card-hover bg-madverse-darker rounded-lg p-8 border border-gray-700">
+                        <div class="card-content">
+                            <h3 class="text-3xl font-bold font-display tracking-tight mb-4 holographic-text">
+                                Our Mission
+                            </h3>
+                            <p class="text-lg font-body leading-relaxed text-gray-300 mb-6">
+                                To create extraordinary moments that inspire, connect, and transform. We're dedicated to showcasing the world's most innovative artists while providing our community with unforgettable experiences that celebrate the universal language of music and art.
+                            </p>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <span class="text-sm font-body font-semibold text-gray-300">Innovation in Entertainment</span>
+                            </div>
+                            <div class="flex items-center space-x-3 mt-2">
+                                <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span class="text-sm font-body font-semibold text-gray-300">Cultural Unity</span>
+                            </div>
+                            <div class="flex items-center space-x-3 mt-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span class="text-sm font-body font-semibold text-gray-300">Sustainable Events</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Team Section -->
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold font-display tracking-tight mb-8">
+                    Meet Our <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Team</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Team Member 1 -->
+                    <div class="card-hover bg-madverse-darker rounded-lg overflow-hidden border border-gray-700">
+                        <div class="relative">
+                            <div class="h-48 bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center">
+                                    <span class="text-madverse-dark font-bold text-2xl font-festival">A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 card-content">
+                            <h4 class="text-xl font-bold font-display mb-2 holographic-text">Alex Chen</h4>
+                            <p class="text-purple-400 font-body font-semibold mb-3">Creative Director</p>
+                            <p class="text-gray-300 text-sm font-body">Visionary behind our immersive experiences and artistic direction.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 2 -->
+                    <div class="card-hover bg-madverse-darker rounded-lg overflow-hidden border border-gray-700">
+                        <div class="relative">
+                            <div class="h-48 bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center">
+                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center">
+                                    <span class="text-madverse-dark font-bold text-2xl font-festival">M</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 card-content">
+                            <h4 class="text-xl font-bold font-display mb-2 holographic-text">Maya Rodriguez</h4>
+                            <p class="text-red-400 font-body font-semibold mb-3">Event Producer</p>
+                            <p class="text-gray-300 text-sm font-body">Mastermind of flawless event execution and logistics.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member 3 -->
+                    <div class="card-hover bg-madverse-darker rounded-lg overflow-hidden border border-gray-700">
+                        <div class="relative">
+                            <div class="h-48 bg-gradient-to-br from-green-500 to-yellow-600 flex items-center justify-center">
+                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center">
+                                    <span class="text-madverse-dark font-bold text-2xl font-festival">D</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 card-content">
+                            <h4 class="text-xl font-bold font-display mb-2 holographic-text">David Kim</h4>
+                            <p class="text-green-400 font-body font-semibold mb-3">Technology Lead</p>
+                            <p class="text-gray-300 text-sm font-body">Pioneering the future of festival technology and innovation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="text-center">
+                <div class=" bg-madverse-darker rounded-lg p-12 border border-gray-700 max-w-4xl mx-auto">
+                    <div class="card-content">
+                        <h3 class="text-3xl font-bold font-display tracking-tight mb-6 holographic-text">
+                            Join the Madverse Family
+                        </h3>
+                        <p class="text-xl font-body text-gray-300 mb-8">
+                            Be part of something extraordinary. Experience the magic, feel the energy, and create memories that last a lifetime.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button class="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-body font-semibold tracking-wide rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
+                                GET INVOLVED
+                            </button>
+                            <button class="px-8 py-4 border border-white text-white font-body font-semibold tracking-wide rounded-lg hover:bg-white hover:text-madverse-dark transition-all duration-300">
+                                CONTACT US
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fixed One World Radio -->
+    <div class="fixed bottom-4 left-4 bg-madverse-darker rounded-full px-4 py-3 flex items-center space-x-4 shadow-lg">
+        <button class="text-white hover:text-gray-300">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+        </button>
+        <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <span class="text-madverse-dark font-bold text-sm">M</span>
+            </div>
+            <div class="text-xs">
+                                 <div class="font-bold font-festival tracking-wider">MADVERSE</div>
+                 <div class="font-body font-semibold">RADIO</div>
+            </div>
+        </div>
+        <button class="text-white hover:text-gray-300">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <script>
+        // Color palettes for dynamic holographic effects
+        const colorPalettes = [
+            // Electric Purple & Blue
+            ['#8B5CF6', '#3B82F6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#EC4899'],
+            // Neon Green & Yellow
+            ['#10B981', '#F59E0B', '#F97316', '#EF4444', '#8B5CF6', '#3B82F6', '#06B6D4'],
+            // Sunset Orange & Red
+            ['#F97316', '#EF4444', '#EC4899', '#8B5CF6', '#3B82F6', '#06B6D4', '#10B981'],
+            // Ocean Blue & Cyan
+            ['#3B82F6', '#06B6D4', '#10B981', '#F59E0B', '#F97316', '#EF4444', '#EC4899'],
+            // Magenta & Pink
+            ['#EC4899', '#8B5CF6', '#3B82F6', '#06B6D4', '#10B981', '#F59E0B', '#F97316'],
+            // Fire Red & Orange
+            ['#EF4444', '#F97316', '#F59E0B', '#10B981', '#06B6D4', '#3B82F6', '#8B5CF6'],
+            // Cyber Green & Blue
+            ['#10B981', '#06B6D4', '#3B82F6', '#8B5CF6', '#EC4899', '#EF4444', '#F97316'],
+            // Golden Yellow & Orange
+            ['#F59E0B', '#F97316', '#EF4444', '#EC4899', '#8B5CF6', '#3B82F6', '#06B6D4']
+        ];
+
+        // Function to get random color palette
+        function getRandomColorPalette() {
+            return colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+        }
+
+        // Function to apply dynamic colors to card
+        function applyRandomColors(card) {
+            const palette = getRandomColorPalette();
+            const shimmerColor = palette[Math.floor(Math.random() * palette.length)];
+            
+            // Apply CSS custom properties
+            card.style.setProperty('--holographic-color-1', palette[0]);
+            card.style.setProperty('--holographic-color-2', palette[1]);
+            card.style.setProperty('--holographic-color-3', palette[2]);
+            card.style.setProperty('--holographic-color-4', palette[3]);
+            card.style.setProperty('--holographic-color-5', palette[4]);
+            card.style.setProperty('--holographic-color-6', palette[5]);
+            card.style.setProperty('--holographic-color-7', palette[6]);
+            card.style.setProperty('--shimmer-color', `rgba(${parseInt(shimmerColor.slice(1, 3), 16)}, ${parseInt(shimmerColor.slice(3, 5), 16)}, ${parseInt(shimmerColor.slice(5, 7), 16)}, 0.3)`);
+        }
+
+        // Enhanced dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.dropdown-container');
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(event.target)) {
+                        const menu = dropdown.querySelector('.dropdown-menu');
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        menu.style.transform = 'translateY(-10px)';
+                    }
+                });
+            });
+            
+            // Enhanced hover effects for dropdown items
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(5px)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+            
+            // Keyboard navigation support
+            dropdowns.forEach(dropdown => {
+                const trigger = dropdown.querySelector('.flex');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                
+                trigger.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        const isVisible = menu.style.visibility === 'visible';
+                        
+                        if (isVisible) {
+                            menu.style.opacity = '0';
+                            menu.style.visibility = 'hidden';
+                            menu.style.transform = 'translateY(-10px)';
+                        } else {
+                            menu.style.opacity = '1';
+                            menu.style.visibility = 'visible';
+                            menu.style.transform = 'translateY(0)';
+                        }
+                    }
+                });
+            });
+
+            // Dynamic color randomization for card-hover elements
+            const cardHoverElements = document.querySelectorAll('.card-hover');
+            
+            cardHoverElements.forEach(card => {
+                // Apply initial random colors
+                applyRandomColors(card);
+                
+                // Change colors on each hover
+                card.addEventListener('mouseenter', function() {
+                    applyRandomColors(this);
+                });
+                
+                // Change colors periodically even without hover (every 8 seconds)
+                setInterval(() => {
+                    if (!card.matches(':hover')) {
+                        applyRandomColors(card);
+                    }
+                }, 8000);
+            });
+        });
+    </script>
+</body>
+</html>
